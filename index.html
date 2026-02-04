@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Can I Take You Out? 💜</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #FFB8FF, #9b5de5);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      padding: 30px 25px;
+      border-radius: 30px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #f4f4f4;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    img {
+      width: 200px;
+      height: 200px;
+      border-radius: 20px;
+      border: 3px solid rgba(255,255,255,0.2);
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      transition: transform 0.3s;
+    }
+
+    img:hover { transform: scale(1.05); }
+
+    .buttons {
+      position: relative;
+      height: 70px;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 14px 30px;
+      border: none;
+      border-radius: 20px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: absolute;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    #yesBtn {
+      background: #fff;
+      color: #6a0dad;
+      right: 20px;
+    }
+
+    #noBtn {
+      background: #3a0ca3;
+      color: #fff;
+      left: 20px;
+    }
+
+    #response {
+      margin-top: 25px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      display: none;
+      color: #fff;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box">
+    <h1>Can I take you out?</h1>
+    <p>Just a casual invite</p>
+
+    <img id="meme" src="chaeyoung1.webp" alt="Chaeyoung meme">
+
+    <div class="buttons">
+      <button id="noBtn">No</button>
+      <button id="yesBtn">Yes</button>
+    </div>
+
+    <div id="response"></div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const response = document.getElementById("response");
+    const meme = document.getElementById("meme");
+
+    let attempts = 0;
+
+    // YES button
+    yesBtn.addEventListener("click", () => {
+      response.style.display = "block";
+      response.innerHTML = "YOWN! Now let's talk where.";
+      meme.src = "chiyong.gif";
+    });
+
+    function moveNoButton() {
+      const box = document.querySelector(".buttons");
+      const maxX = box.offsetWidth - noBtn.offsetWidth;
+      const maxY = box.offsetHeight - noBtn.offsetHeight;
+
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+
+      noBtn.style.left = randomX + "px";
+      noBtn.style.top = randomY + "px";
+    }
+
+    function updateAttemptMessage() {
+      response.style.display = "block";
+
+      if (attempts === 1) {
+        response.innerHTML = "Sure ka na ba?";
+        meme.src = "chaeyoung4.webp";
+      }
+      if (attempts === 5) {
+        response.innerHTML = "May isa pang button talaga!";
+        meme.src = "chaeyoung3.jpg";
+      }
+      if (attempts === 10) {
+        response.innerHTML = "Wala kang no choice";
+        meme.src = "chaeyoung5.jpg";
+      }
+    }
+
+    function escapeNo(e) {
+      e.preventDefault();
+      attempts++;
+      moveNoButton();
+      updateAttemptMessage();
+    }
+
+    noBtn.addEventListener("mouseenter", escapeNo);
+    noBtn.addEventListener("touchstart", escapeNo);
+
+    document.addEventListener("touchstart", (e) => {
+      const touch = e.touches[0];
+      const rect = noBtn.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const dx = touch.clientX - centerX;
+      const dy = touch.clientY - centerY;
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      if (distance < 150) {
+        attempts++;
+        moveNoButton();
+        updateAttemptMessage();
+      }
+    });
+
+    noBtn.addEventListener("click", (e) => e.preventDefault());
+  </script>
+
+</body>
+</html>
