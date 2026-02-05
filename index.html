@@ -1,194 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Can I Take You Out? 💜</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can I Take You Out? 💜</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      height: 100vh;
-      width: 100vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #FFB8FF, #9b5de5);
-      overflow: hidden;
-      position: relative;
-    }
+body{
+  font-family:'Poppins',sans-serif;
+  height:100vh;
+  background:linear-gradient(135deg,#FFB8FF,#9b5de5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
 
-    .box {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(15px);
-      padding: 30px 25px;
-      border-radius: 30px;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-    }
+/* ===== LOADER ===== */
+#loader{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#9b5de5,#FFB8FF);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  transition:.8s;
+}
+#loader.hidden{opacity:0;visibility:hidden}
 
-    h1 {
-      font-family: 'Pacifico', cursive;
-      font-size: 2.5rem;
-      color: #fff;
-      margin-bottom: 10px;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
-    }
+.loader-bar-container{
+  width:220px;height:10px;
+  background:rgba(255,255,255,.3);
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:5px;
+}
+.loader-bar{
+  height:100%;
+  width:0;
+  background:white;
+  animation:load 3s forwards;
+}
+@keyframes load{to{width:100%}}
 
-    p {
-      font-size: 1.1rem;
-      color: #f4f4f4;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
+.loader-gif{
+  width:200px;
+  height: 200px;
+  opacity:0;
+  animation:show 0.6s forwards,pulse 1.2s;
+  animation-delay:1s,1.3s;
+  margin-bottom: 20px;
+}
+@keyframes show{to{opacity:1;transform:scale(1)}}
+@keyframes pulse{50%{transform:scale(1.15)}}
 
-    img {
-      width: 200px;
-      height: 200px;
-      border-radius: 20px;
-      border: 3px solid rgba(255,255,255,0.2);
-      margin-bottom: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-      transition: transform 0.3s;
-    }
+.loader-text{
+  margin-top:10px;
+  color:white;
+  font-weight:600;
+  opacity:0;
+  animation:fade .5s forwards;
+  animation-delay:3s;
+}
+@keyframes fade{to{opacity:1}}
 
-    img:hover { transform: scale(1.05); }
+/* ===== CARD ===== */
+.box{
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(15px);
+  padding:30px 25px;
+  border-radius:30px;
+  width:100%;
+  max-width:420px;
+  text-align:center;
+  box-shadow:0 15px 35px rgba(0,0,0,.25);
+  opacity:0;
+  transform:translateY(20px);
+  transition:.8s;
+}
+.box.show{opacity:1;transform:translateY(0)}
 
-    .buttons {
-      position: relative;
-      height: 70px;
-      margin-top: 10px;
-    }
+h1{
+  font-family:'Pacifico',cursive;
+  color:white;
+  font-size:2.4rem;
+}
+p{color:#f4f4f4;margin:10px 0 20px}
 
-    button {
-      padding: 14px 30px;
-      border: none;
-      border-radius: 20px;
-      font-size: 1.15rem;
-      font-weight: 600;
-      cursor: pointer;
-      position: absolute;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
+img{
+  width:200px;height:200px;
+  border-radius:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
 
-    #yesBtn {
-      background: #fff;
-      color: #6a0dad;
-      right: 20px;
-    }
+.buttons{
+  position:relative;
+  height:70px;
+}
+button{
+  position:absolute;
+  padding:14px 30px;
+  border-radius:20px;
+  border:none;
+  font-weight:600;
+  font-size:1.1rem;
+  cursor:pointer;
+}
+#yesBtn{right:20px;background:white;color:#6a0dad}
+#noBtn{left:20px;background:#3a0ca3;color:white}
 
-    #noBtn {
-      background: #3a0ca3;
-      color: #fff;
-      left: 20px;
-    }
+#response{
+  margin-top:20px;
+  font-size:1.3rem;
+  font-weight:bold;
+  display:none;
+  color:white;
+}
 
-    #response {
-      margin-top: 25px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      display: none;
-      color: #fff;
-      text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-    }
-  </style>
+/* ===== CONFETTI ===== */
+.confetti{
+  position:fixed;
+  width:8px;
+  height:14px;
+  background:red;
+  top:-20px;
+  animation:fall 3s linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(720deg)}
+}
+
+.meme-animate {
+  animation: show 0.1s forwards, pulse 1.2s;
+  
+}
+
+</style>
 </head>
 
 <body>
 
-  <div class="box">
-    <h1>Can I take you out?</h1>
-    <p>Just a casual invite</p>
+<!-- LOADER -->
+<div id="loader">
+  <img src="chiyong.gif" class="loader-gif">
+  <div class="loader-bar-container"><div class="loader-bar"></div></div>
+  
+  <div class="loader-text">Loading…</div>
+</div>
 
-    <img id="meme" src="chaeyoung1.webp" alt="Chaeyoung meme">
-
-    <div class="buttons">
-      <button id="noBtn">No</button>
-      <button id="yesBtn">Yes</button>
-    </div>
-
-    <div id="response"></div>
+<!-- MAIN -->
+<div class="box" id="mainBox">
+  <h1>Can I take you out?</h1>
+<br>
+  <img id="meme" src="chaeyoung1.webp" class="meme-animate">
+<br>
+  <div class="buttons">
+    <button id="noBtn">No</button>
+    <button id="yesBtn">Yes</button>
   </div>
 
-  <script>
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const response = document.getElementById("response");
-    const meme = document.getElementById("meme");
+  <div id="response"></div>
+</div>
 
-    let attempts = 0;
+<script>
+const noBtn=document.getElementById("noBtn");
+const yesBtn=document.getElementById("yesBtn");
+const response=document.getElementById("response");
+const meme=document.getElementById("meme");
 
-    // YES button
-    yesBtn.addEventListener("click", () => {
-      response.style.display = "block";
-      response.innerHTML = "YOWN! Now let's talk where.";
-      meme.src = "chiyong.gif";
-    });
+let attempts=0;
 
-    function moveNoButton() {
-      const box = document.querySelector(".buttons");
-      const maxX = box.offsetWidth - noBtn.offsetWidth;
-      const maxY = box.offsetHeight - noBtn.offsetHeight;
+// LOADER
+window.addEventListener("load",()=>{
+  setTimeout(()=>{
+    loader.classList.add("hidden");
+    mainBox.classList.add("show");
+  },5000);
+});
 
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
+// CONFETTI
+function confettiBurst(){
+  for(let i=0;i<80;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},100%,70%)`;
+    c.style.animationDuration=2+Math.random()*2+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
 
-      noBtn.style.left = randomX + "px";
-      noBtn.style.top = randomY + "px";
-    }
+// YES
+yesBtn.onclick = () => {
+  response.style.display = "block";
+  response.innerHTML = "I'll pick you up friday after class, we'll go to Typica, my treat.";
+  meme.src = "chaeyoung7.jpg";
 
-    function updateAttemptMessage() {
-      response.style.display = "block";
+  // restart animation
+  meme.classList.remove("meme-animate");
+  void meme.offsetWidth; // forces reflow
+  meme.classList.add("meme-animate");
 
-      if (attempts === 1) {
-        response.innerHTML = "Sure ka na ba?";
-        meme.src = "chaeyoung4.webp";
-      }
-      if (attempts === 5) {
-        response.innerHTML = "May isa pang button talaga!";
-        meme.src = "chaeyoung3.jpg";
-      }
-      if (attempts === 10) {
-        response.innerHTML = "Wala kang no choice";
-        meme.src = "chaeyoung5.jpg";
-      }
-    }
+  confettiBurst();
+};
 
-    function escapeNo(e) {
-      e.preventDefault();
-      attempts++;
-      moveNoButton();
-      updateAttemptMessage();
-    }
+// NO RUNS
+function moveNo(){
+  const b=document.querySelector(".buttons");
+  noBtn.style.left=Math.random()*(b.offsetWidth-noBtn.offsetWidth)+"px";
+  noBtn.style.top=Math.random()*(b.offsetHeight-noBtn.offsetHeight)+"px";
+}
 
-    noBtn.addEventListener("mouseenter", escapeNo);
-    noBtn.addEventListener("touchstart", escapeNo);
+function update(){
+  response.style.display = "block";
 
-    document.addEventListener("touchstart", (e) => {
-      const touch = e.touches[0];
-      const rect = noBtn.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const dx = touch.clientX - centerX;
-      const dy = touch.clientY - centerY;
-      const distance = Math.sqrt(dx*dx + dy*dy);
-      if (distance < 150) {
-        attempts++;
-        moveNoButton();
-        updateAttemptMessage();
-      }
-    });
+  let newSrc = "";
 
-    noBtn.addEventListener("click", (e) => e.preventDefault());
-  </script>
+  if (attempts === 3) {
+    response.innerHTML = "Sure ka na ba?";
+    newSrc = "chaeyoung5.jpg";
+  }
+
+  if (attempts === 6) {
+    response.innerHTML = "May isa pang button 😭";
+    newSrc = "chaeyoung6.jpg";
+  }
+
+  if (attempts === 9) {
+    response.innerHTML = "Wala kang no choice 😌";
+    newSrc = "chaeyoung8.jpg";
+  }
+
+  // Only animate if image actually changes
+  if (newSrc) {
+    meme.src = newSrc;
+
+    // restart animation
+    meme.classList.remove("meme-animate");
+    void meme.offsetWidth; // force reflow
+    meme.classList.add("meme-animate");
+  }
+}
+
+noBtn.addEventListener("mouseenter",()=>{attempts++;moveNo();update()});
+noBtn.addEventListener("touchstart",e=>{e.preventDefault();attempts++;moveNo();update()});
+noBtn.onclick=e=>e.preventDefault();
+</script>
 
 </body>
 </html>
